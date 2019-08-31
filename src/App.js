@@ -8,8 +8,10 @@ function App() {
   const [todoList, setTodoList] = useState([]);
 
   const addTodo = () => {
-    setTodoList([...todoList, input]);
-    setInput('');
+    if (!!input) {
+      setTodoList([...todoList, input]);
+      setInput('');
+    }
   }
 
   const deleteTodo = (index) => {
