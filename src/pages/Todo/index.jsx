@@ -6,7 +6,7 @@ const Todo = ({todoList, deleteTodo, changeTodoStatus, type}) => (
   <div>
     {/*受け取ったtodoListを使って表示する*/}
     {todoList.map((todo, idx) => (
-      <Container>
+      <Container key={todo}>
         {todo}
         <button onClick={() => deleteTodo(idx)}>削除</button>
         <button onClick={() => changeTodoStatus(idx)}>{type === "todo" ? "完了済みにする" : "戻す"}</button>
