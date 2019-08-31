@@ -37,12 +37,19 @@ function App() {
 
   return (
     <div className="App">
+      <Title>Todoリスト</Title>
       <input onChange={(e) => setInput(e.target.value)} value={input}/>
       <button onClick={() => addTodo()}>追加</button>
       <TodoContainer>
       {/* todoListという変数とdeleteTodoという関数をpropsとしてTodoコンポーネントに渡している*/}
-        <Todo todoList={todoList} deleteTodo={deleteTodo} changeTodoStatus={finishTodo}/>
-        <Todo todoList={finishedList} deleteTodo={deleteFinishTodo} changeTodoStatus={reopenTodo}/>
+        <SubContainer>
+          <SubTitle>未完了</SubTitle>
+          <Todo todoList={todoList} deleteTodo={deleteTodo} changeTodoStatus={finishTodo} type="todo"/>
+        </SubContainer>
+        <SubContainer>
+          <SubTitle>完了済み</SubTitle>
+          <Todo todoList={finishedList} deleteTodo={deleteFinishTodo} changeTodoStatus={reopenTodo} type="done"/>
+        </SubContainer>
       </TodoContainer>
     </div>
   );
@@ -50,10 +57,26 @@ function App() {
 
 export default App;
 
+const Title = styled.p`
+  font-size: 26px;
+  color: #0097a7;
+  letter-spacing: 2.8px;
+  font-weight: 200;
+`;
+
+const SubTitle = styled.p`
+  font-size: 22px;
+  color: #5c5c5c;
+`;
+
+const SubContainer = styled.div`
+  width: 400px;
+`;
+
 const TodoContainer = styled.div`
   display: flex;
   flex-direction: row;
-  width: 50%;
+  width: 80%;
   margin: 0 auto;
   justify-content: space-between;
 `;
