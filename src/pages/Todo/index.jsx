@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 // todoListという変数とdeleteTodoという関数をpropsとして受け取る
 const Todo = ({todoList, deleteTodo, changeTodoStatus, type}) => (
@@ -13,7 +13,7 @@ const Todo = ({todoList, deleteTodo, changeTodoStatus, type}) => (
       </Container>
     ))}
   </div>
-)
+);
 
 export default Todo;
 

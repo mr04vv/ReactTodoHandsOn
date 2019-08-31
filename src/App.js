@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
 import Todo from './pages/Todo';
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 function App() {
 
@@ -53,7 +53,7 @@ function App() {
       </TodoContainer>
     </div>
   );
-}
+};
 
 export default App;
 
