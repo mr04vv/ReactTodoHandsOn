@@ -8,13 +8,15 @@ import 'firebase/firestore'; // 追記
 import useTodo from './hooks/useTodo';
 import SimpleBottomNavigation from './components/BottomNavigation';
 import AddModal from './pages/Todo/AddModal';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import DeleteModal from './pages/Todo/DeleteModal';
 
 function App() {
 
   const state = useTodo();
 
   return (
-    <div className="App">
+    <Body className="App">
       <AddModal
         isOpen={state.isOpenAddModal}
         setIsOpen={state.setIsOpenAddModal}
@@ -22,27 +24,34 @@ function App() {
         setInput={state.setInput}
         addTodo={state.addTodo}
       />
+      <DeleteModal
+        isOpenNumber={state.isOpenDeleteModalByNumber}
+        setIsOpen={state.setIsOpenDeleteModalByNumber}
+        todoList={state.deleteType === "todo" ? state.todoList : state.finishedList}
+        deleteTodo={state.deleteType === "todo" ? state.deleteTodo : state.deleteFinishTodo}
+      />
       <Title>Todoリスト</Title>
       {state.isLoading ? 
-        <Loading>loading</Loading>
+         <LoadingCircle />
       :
         <TodoContainer>
         {/* todoListという変数とdeleteTodoという関数をpropsとしてTodoコンポーネントに渡している*/}
-          <SubContainer>
-            <SubTitle>未完了</SubTitle>
-            <Todo todoList={state.todoList} deleteTodo={state.deleteTodo} changeTodoStatus={state.finishTodo} type="todo"/>
-          </SubContainer>
-          <SubContainer>
-            <SubTitle>完了済み</SubTitle>
-            <Todo todoList={state.finishedList} deleteTodo={state.deleteFinishTodo} changeTodoStatus={state.reopenTodo} type="done"/>
-          </SubContainer>
+          <Todo 
+            todoList={state.todoList}
+            changeTodoStatus={state.finishTodo}
+            finishedList={state.finishedList}
+            changeFinishedStatus={state.reopenTodo}
+            tabIndex={state.tabIndex}
+            setDeleteType={state.setDeleteType}
+            isOpenDeleteModal={state.setIsOpenDeleteModalByNumber}
+          />
         </TodoContainer>
       }
-      <SimpleBottomNavigation/>
+      <SimpleBottomNavigation setTabIndex={state.setTabIndex} tabIndex={state.tabIndex}/>
       <AddButton color="primary" aria-label="add" onClick={() => state.setIsOpenAddModal(true)}>
         <AddIcon />
       </AddButton>
-    </div>
+    </Body>
   );
 };
 
@@ -55,29 +64,23 @@ const Title = styled.p`
   font-weight: 200;
 `;
 
-const SubTitle = styled.p`
-  font-size: 22px;
-  color: #5c5c5c;
-`;
-
-const SubContainer = styled.div`
-  width: 400px;
-`;
-
 const TodoContainer = styled.div`
   display: flex;
   flex-direction: row;
-  width: 80%;
   margin: 0 auto;
   justify-content: space-between;
 `;
 
-const Loading = styled.div`
-  margin: 40px auto;
-`;
-
 const AddButton = styled(Fab)`
-  position: absolute;
+  position: fixed;
   bottom: 14vh;
   right: 6vh;
+`;
+
+const Body = styled.div`
+  margin-bottom: 10vh;
+`;
+
+const LoadingCircle = styled(CircularProgress)`
+  margin-top: 10vh;
 `;

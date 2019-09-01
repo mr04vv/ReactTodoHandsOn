@@ -13,6 +13,12 @@ const useTodo = () => {
   // 完了済みのTodoが変化したかを監視する変数
   const [isChangedFinished, setIsChangedFinished] = useState(false);
   const [isOpenAddModal, setIsOpenAddModal] = useState(false);
+  // ボトムナビゲーションのステータス
+  const [tabIndex, setTabIndex] = useState(0);
+  // 削除モーダルを開く際のTodoIdを指定 falseのときはモーダル閉じる
+  const [isOpenDeleteModalByNumber, setIsOpenDeleteModalByNumber] = useState(false);
+  // 削除する時未完か完了済みかを判定する
+  const [deleteType, setDeleteType] = useState("todo");
 
   const db = firebase.firestore(); // 追記
 
@@ -108,6 +114,12 @@ const useTodo = () => {
     reopenTodo,
     isOpenAddModal,
     setIsOpenAddModal,
+    tabIndex,
+    setTabIndex,
+    isOpenDeleteModalByNumber,
+    setIsOpenDeleteModalByNumber,
+    deleteType,
+    setDeleteType,
   }
 }
 

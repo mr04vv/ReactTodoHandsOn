@@ -2,35 +2,36 @@ import React from 'react';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import Home from '@material-ui/icons/Home';
-import PlayCircleOutline from '@material-ui/icons/PlayCircleOutline';
+import Assignment from '@material-ui/icons/Assignment';
 import Done from '@material-ui/icons/Done';
 import styled from 'styled-components';
 
-export default function SimpleBottomNavigation() {
-  const [value, setValue] = React.useState(0);
+const SimpleBottomNavigation = ({tabIndex, setTabIndex}) => {
 
   return (
     <BottomNavigationWrapper>
       <BottomNavigation
-        value={value}
+        value={tabIndex}
         onChange={(event, newValue) => {
-          setValue(newValue);
+          setTabIndex(newValue);
         }}
         showLabels
       >
         <BottomNavigationAction label="すべて" icon={<Home />} />
-        <BottomNavigationAction label="未完了" icon={<PlayCircleOutline />} />
+        <BottomNavigationAction label="未完了" icon={<Assignment />} />
         <BottomNavigationAction label="完了済み" icon={<Done />} />
       </BottomNavigation>
     </BottomNavigationWrapper>
   );
 }
 
+export default SimpleBottomNavigation;
+
 const BottomNavigationWrapper = styled.div`
   @media(min-width: 480px) {
     display: none;    
   }
-  position: absolute;
+  position: fixed;
   bottom: 0;
   width: 100%;
 `;
