@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import firebase from 'firebase';
+import { StylesProvider } from '@material-ui/styles';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -18,7 +19,11 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(
+  <StylesProvider injectFirst>
+    <App />
+  </StylesProvider>
+  , document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
