@@ -1,4 +1,6 @@
 import React, { useState, useEffect} from 'react'; // 修正
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 import './App.css';
 import Todo from './pages/Todo';
 import styled from 'styled-components';
@@ -101,8 +103,8 @@ function App() {
   return (
     <div className="App">
       <Title>Todoリスト</Title>
-      <input onChange={(e) => setInput(e.target.value)} value={input}/>
-      <button onClick={() => addTodo()}>追加</button>
+      <TextField onChange={(e) => setInput(e.target.value)} value={input}/>
+      <Button variant="contained" color="primary" onClick={() => addTodo()}>追加</Button>
       {isLoading ? 
         <Loading>loading</Loading>
       :
