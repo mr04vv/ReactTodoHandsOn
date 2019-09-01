@@ -10,6 +10,7 @@ import SimpleBottomNavigation from './components/BottomNavigation';
 import AddModal from './pages/Todo/AddModal';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import DeleteModal from './pages/Todo/DeleteModal';
+import PCTab from './components/PCTab';
 
 function App() {
 
@@ -31,6 +32,7 @@ function App() {
         deleteTodo={state.deleteType === "todo" ? state.deleteTodo : state.deleteFinishTodo}
       />
       <Title>Todoリスト</Title>
+      <PCTab setTabIndex={state.setTabIndex} tabIndex={state.tabIndex}/>
       {state.isLoading ? 
          <LoadingCircle />
       :
@@ -75,6 +77,9 @@ const AddButton = styled(Fab)`
   position: fixed;
   bottom: 14vh;
   right: 6vh;
+  @media(min-width: 480px) {
+    right: 20vh;
+  }
 `;
 
 const Body = styled.div`
