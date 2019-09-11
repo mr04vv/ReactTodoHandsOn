@@ -4,6 +4,7 @@ import Todo from './pages/Todo';
 import styled from 'styled-components';
 import firebase from 'firebase'; // 追記
 import 'firebase/firestore'; // 追記
+import useLogin from './hooks/useLogin';
 
 function App() {
 
@@ -17,22 +18,29 @@ function App() {
   const [isChangedTodo, setIsChangedTodo] = useState(false);
   // 完了済みのTodoが変化したかを監視する変数
   const [isChangedFinished, setIsChangedFinished] = useState(false);
+  const state = useLogin();
 
   const db = firebase.firestore(); // 追記
 
   // 追記 一番最初にfirestoreからデータを取ってきてstateに入れる
   useEffect(() => {
     (async () => {
-      const resTodo = await db.collection("todoList").doc("todo").get();
+      if (state.uid) {
+      const resTodo = await db.collection("todoList").doc("todo").get(); // await この処理が終わるまで次の処理に行かない
       // stateに入れる
-      setTodoList(resTodo.data().tasks);
+      if (resTodo.data()[state.uid]) {
+        setTodoList(resTodo.data()[state.uid]);
+      }
       const resFinishedTodo = await db.collection("todoList").doc("finishedTodo").get();
       // stateに入れる
-      setFinishedList(resFinishedTodo.data().tasks);
+      if (resFinishedTodo.data()[state.uid]) {
+        setFinishedList(resFinishedTodo.data()[state.uid]);
+      }
       // Loading終了
       setIsLoading(false);
+      }
     })()
-  }, [db])
+  }, [db, state.uid])
 
   useEffect(() => {
     if (isChangedTodo) {
@@ -40,12 +48,13 @@ function App() {
         // 通信をするのでLoadingをtrue
         setIsLoading(true)
         const docRef = await db.collection('todoList').doc('todo');
-        docRef.update({ tasks: todoList })
+        const body = { [state.uid]: todoList }
+        docRef.update(body)
         // Loading終了
         setIsLoading(false)
       })()
     }
-  }, [todoList, isChangedTodo, db])
+  }, [todoList, isChangedTodo, db, state.uid])
 
   useEffect(() => {
     if (isChangedFinished) {
@@ -53,15 +62,16 @@ function App() {
         // 通信をするのでLoadingをtrue
         setIsLoading(true)
         const docRef = await db.collection('todoList').doc('finishedTodo');
-        docRef.update({ tasks: finishedList })
+        const body = { [state.uid]: finishedList }
+        docRef.update(body)
         // Loading終了
         setIsLoading(false)
       })()
     }
     setIsChangedFinished(false)
-  }, [db, finishedList, isChangedFinished])
+  }, [db, finishedList, isChangedFinished, state.uid])
 
-  const addTodo = async () => {
+  const addTodo = () => {
     if (!!input) {
       // 追記 Todoが変化したのでtrue
       setIsChangedTodo(true);
@@ -98,8 +108,13 @@ function App() {
     setTodoList([...todoList,finishedList.find((_, idx) => idx === index)])
   }
 
+  const logout = () => {
+    firebase.auth().signOut()
+  }
+
   return (
     <div className="App">
+      <button onClick={() => logout()}>logout</button>
       <Title>Todoリスト</Title>
       <input onChange={(e) => setInput(e.target.value)} value={input}/>
       <button onClick={() => addTodo()}>追加</button>
